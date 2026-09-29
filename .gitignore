@@ -19,3 +19,5 @@ test-results
 playwright-report
 blob-report
 playwright/.auth
+# Local Docker dev secrets/config (copy from docker/.env.example)
+docker/.env

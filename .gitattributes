@@ -1,0 +1,4 @@
+# Shell scripts and the Procfile run in a Linux container: keep LF endings.
+*.sh text eol=lf
+docker/Procfile text eol=lf
+docker/.env.example text eol=lf

@@ -1,0 +1,4 @@
+web: bench serve --host 0.0.0.0 --port 8000
+socketio: bench socketio
+schedule: bench schedule
+worker: bench worker 1>> logs/worker.log 2>> logs/worker.error.log

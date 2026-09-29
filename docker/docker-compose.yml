@@ -1,28 +1,68 @@
-version: "3.7"
-name: lms
+# Placeraa local development stack.
+#
+#   MariaDB + Redis + one Frappe bench container.
+#   The bench lives in a named volume, so it survives `docker compose down`.
+#   This repository is bind-mounted at apps/lms, so the container runs the
+#   local, Git-controlled LMS source and never clones it from GitHub.
+#
+# See docker/README.md before running anything destructive.
+name: placeraa
+
 services:
   mariadb:
-    image: mariadb:10.8
+    # Pinned by digest (the exact image verified in the cold backup).
+    image: mariadb@sha256:456709ab146585d6189da05669b84384518baecd83670c9e5221f8c20a47cf1e
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
       - --skip-character-set-client-handshake
       - --skip-innodb-read-only-compressed # Temporary fix for MariaDB 10.6
     environment:
-      MYSQL_ROOT_PASSWORD: 123
+      # Only used when the data directory is empty. A data directory seeded
+      # from a backup keeps whatever root password it already has.
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?copy docker/.env.example to docker/.env}
     volumes:
       - mariadb-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb -uroot -p\"$$MYSQL_ROOT_PASSWORD\" -e 'SELECT 1' >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
 
   redis:
-    image: redis:alpine
+    image: redis@sha256:3811787313eba226a2ef38658c6ccb91cd5e110edc89c37767de373120a0e5a0
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
 
   frappe:
-    image: frappe/bench:latest
+    image: frappe/bench@sha256:a99c611f8f89bd04437b3cbd4ed0b11db8a0aa5b60fade4f29d02090f330e4af
     command: bash /workspace/init.sh
+    init: true # PID 1 forwards signals, so `stop` is a clean shutdown
+    stop_grace_period: 30s
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       - SHELL=/bin/bash
+      - PYTHONDONTWRITEBYTECODE=1 # keep .pyc files off the Windows bind mount
+      - SITE_NAME=${SITE_NAME:-lms.localhost}
+      - RUN_MIGRATE=${RUN_MIGRATE:-0}
     working_dir: /home/frappe
     volumes:
+      # Persistent bench: env/, sites/, config, logs, apps/frappe, apps/payments.
+      - bench-data:/home/frappe/frappe-bench
+      # The local repository, mounted directly over apps/lms. Paths inside the
+      # bench (.pth files, frontend/node_modules/@framework/ui) keep resolving.
+      - ..:/home/frappe/frappe-bench/apps/lms
+      # Keeps ~50k node_modules files off the Windows bind mount.
+      - lms-node-modules:/home/frappe/frappe-bench/apps/lms/frontend/node_modules
+      # init.sh and Procfile.
       - .:/workspace
     ports:
       - 8000:8000
@@ -30,3 +70,5 @@ services:
 
 volumes:
   mariadb-data:
+  bench-data:
+  lms-node-modules:

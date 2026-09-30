@@ -1,0 +1,116 @@
+{
+ "actions": [],
+ "autoname": "format:SSK-{#####}",
+ "creation": "2026-09-30 06:30:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "student",
+  "student_name",
+  "skill",
+  "column_break_proficiency",
+  "proficiency_score",
+  "level",
+  "last_assessed_on"
+ ],
+ "fields": [
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Student",
+   "options": "User",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fetch_from": "student.full_name",
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Student Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "skill",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Skill",
+   "options": "Skill",
+   "reqd": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "column_break_proficiency",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "0 to 100",
+   "fieldname": "proficiency_score",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Proficiency Score",
+   "precision": "2",
+   "reqd": 1
+  },
+  {
+   "description": "Worked out from the proficiency score.",
+   "fieldname": "level",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Level",
+   "options": "Beginner\nDeveloping\nProficient\nAdvanced",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_assessed_on",
+   "fieldtype": "Datetime",
+   "label": "Last Assessed On"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-09-30 06:30:00.000000",
+ "modified_by": "Administrator",
+ "module": "Placeraa",
+ "name": "Student Skill",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "export": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Moderator",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "LMS Student"
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "student_name",
+ "track_changes": 1
+}

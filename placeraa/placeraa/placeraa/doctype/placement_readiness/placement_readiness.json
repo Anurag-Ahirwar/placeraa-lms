@@ -1,0 +1,152 @@
+{
+ "actions": [],
+ "autoname": "field:student",
+ "creation": "2026-09-30 06:30:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "student",
+  "student_name",
+  "column_break_overall",
+  "overall_score",
+  "readiness_level",
+  "last_updated",
+  "section_break_components",
+  "technical_score",
+  "problem_solving_score",
+  "column_break_components",
+  "aptitude_score",
+  "communication_score"
+ ],
+ "fields": [
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Student",
+   "options": "User",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fetch_from": "student.full_name",
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Student Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_overall",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "0 to 100",
+   "fieldname": "overall_score",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Overall Score",
+   "precision": "2"
+  },
+  {
+   "description": "Worked out from the overall score.",
+   "fieldname": "readiness_level",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Readiness Level",
+   "options": "Not Ready\nDeveloping\nPlacement Ready",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_updated",
+   "fieldtype": "Datetime",
+   "label": "Last Updated",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_components",
+   "fieldtype": "Section Break",
+   "label": "Component Scores"
+  },
+  {
+   "default": "0",
+   "description": "0 to 100",
+   "fieldname": "technical_score",
+   "fieldtype": "Float",
+   "label": "Technical Score",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "description": "0 to 100",
+   "fieldname": "problem_solving_score",
+   "fieldtype": "Float",
+   "label": "Problem Solving Score",
+   "precision": "2"
+  },
+  {
+   "fieldname": "column_break_components",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "0 to 100",
+   "fieldname": "aptitude_score",
+   "fieldtype": "Float",
+   "label": "Aptitude Score",
+   "precision": "2"
+  },
+  {
+   "default": "0",
+   "description": "0 to 100",
+   "fieldname": "communication_score",
+   "fieldtype": "Float",
+   "label": "Communication Score",
+   "precision": "2"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-09-30 06:30:00.000000",
+ "modified_by": "Administrator",
+ "module": "Placeraa",
+ "name": "Placement Readiness",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "export": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Moderator",
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "LMS Student"
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "student_name",
+ "track_changes": 1
+}

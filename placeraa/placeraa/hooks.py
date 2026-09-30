@@ -170,25 +170,31 @@ required_apps = ["frappe/lms"]
 # -----------
 # Permissions evaluated in scripted ways
 
-# permission_query_conditions = {
-# 	"Event": "frappe.desk.doctype.event.event.get_permission_query_conditions",
-# }
-#
-# has_permission = {
-# 	"Event": "frappe.desk.doctype.event.event.has_permission",
-# }
+# A student reads only their own skills, gaps, recommendations and readiness.
+permission_query_conditions = {
+	"Student Skill": "placeraa.permissions.student_record_query_conditions",
+	"Skill Gap": "placeraa.permissions.student_record_query_conditions",
+	"Recommendation": "placeraa.permissions.student_record_query_conditions",
+	"Placement Readiness": "placeraa.permissions.student_record_query_conditions",
+}
+
+has_permission = {
+	"Student Skill": "placeraa.permissions.student_record_has_permission",
+	"Skill Gap": "placeraa.permissions.student_record_has_permission",
+	"Recommendation": "placeraa.permissions.student_record_has_permission",
+	"Placement Readiness": "placeraa.permissions.student_record_has_permission",
+}
 
 # Document Events
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	# A submitted LMS quiz becomes a score in the skills the quiz is mapped to.
+	"LMS Quiz Submission": {
+		"after_insert": "placeraa.services.assessment.on_quiz_submission",
+	},
+}
 
 # Scheduled Tasks
 # ---------------

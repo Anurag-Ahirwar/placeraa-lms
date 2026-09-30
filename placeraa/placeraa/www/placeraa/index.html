@@ -1,0 +1,336 @@
+{% extends "templates/base.html" %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block banner %}{% endblock %}
+
+{% block style %}
+<style>
+	.px-page {
+		--px-bg: #f4f6fb;
+		--px-card: #ffffff;
+		--px-ink: #0f172a;
+		--px-muted: #5b6577;
+		--px-line: #e4e8f0;
+		--px-brand: #4f46e5;
+		--px-brand-2: #7c3aed;
+		--px-good: #15803d;
+		--px-good-bg: #dcfce7;
+		--px-info: #1d4ed8;
+		--px-info-bg: #dbeafe;
+		--px-warn: #b45309;
+		--px-warn-bg: #fef3c7;
+		--px-bad: #b91c1c;
+		--px-bad-bg: #fee2e2;
+		--px-track: #e8ecf4;
+
+		min-height: 100vh;
+		background: var(--px-bg);
+		color: var(--px-ink);
+		font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+		font-size: 15px;
+		line-height: 1.5;
+		-webkit-font-smoothing: antialiased;
+	}
+	.px-page *, .px-page *::before, .px-page *::after { box-sizing: border-box; }
+	.px-page h1, .px-page h2, .px-page h3, .px-page p { margin: 0; }
+	.px-page a { text-decoration: none; }
+
+	.px-wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px 56px; }
+
+	/* top bar */
+	.px-top { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; gap: 12px; }
+	.px-brand { font-weight: 800; letter-spacing: 0.28em; font-size: 15px; color: var(--px-brand); }
+	.px-top-right { display: flex; align-items: center; gap: 14px; color: var(--px-muted); font-size: 14px; flex-wrap: wrap; justify-content: flex-end; }
+	.px-top-right a { color: var(--px-brand); font-weight: 600; }
+	.px-top-right a:hover { text-decoration: underline; }
+
+	/* hero */
+	.px-hero {
+		background: linear-gradient(135deg, #312e81 0%, var(--px-brand) 48%, var(--px-brand-2) 100%);
+		color: #fff;
+		border-radius: 20px;
+		padding: 32px;
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 28px;
+		align-items: center;
+		box-shadow: 0 18px 40px -18px rgba(79, 70, 229, 0.55);
+	}
+	.px-eyebrow { font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.85; font-weight: 700; }
+	.px-hero h1 { font-size: 34px; line-height: 1.15; margin-top: 6px; font-weight: 800; }
+	.px-hero .px-hi { margin-top: 8px; opacity: 0.92; font-size: 16px; }
+	.px-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+	.px-stat { background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 12px; padding: 10px 16px; min-width: 110px; }
+	.px-stat b { display: block; font-size: 22px; line-height: 1.1; }
+	.px-stat span { font-size: 12px; opacity: 0.88; }
+	.px-ring { position: relative; width: 190px; height: 190px; }
+	.px-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+	.px-ring .track { stroke: rgba(255, 255, 255, 0.22); }
+	.px-ring .value { stroke: #fff; stroke-linecap: round; animation: px-ring 1.1s ease-out; }
+	.px-ring-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+	.px-ring-label b { font-size: 46px; line-height: 1; font-weight: 800; }
+	.px-ring-label span { font-size: 12px; opacity: 0.9; margin-top: 6px; max-width: 110px; }
+	.px-hero-level { display: inline-block; margin-top: 12px; background: #fff; color: var(--px-brand); font-weight: 700; font-size: 13px; padding: 4px 12px; border-radius: 999px; }
+
+	/* sections */
+	.px-section { margin-top: 34px; }
+	.px-section > h2 { font-size: 20px; font-weight: 800; }
+	.px-section > .px-sub { color: var(--px-muted); margin-top: 2px; font-size: 14px; }
+	.px-grid { display: grid; gap: 14px; margin-top: 16px; }
+	.px-grid.skills { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+	.px-grid.recs { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+	.px-card { background: var(--px-card); border: 1px solid var(--px-line); border-radius: 16px; padding: 18px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }
+
+	/* chips */
+	.px-chip { display: inline-block; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+	.lvl-advanced, .pri-low, .rdy-placement-ready { background: var(--px-good-bg); color: var(--px-good); }
+	.lvl-proficient { background: var(--px-info-bg); color: var(--px-info); }
+	.lvl-developing, .pri-medium, .rdy-developing { background: var(--px-warn-bg); color: var(--px-warn); }
+	.lvl-beginner, .pri-high, .rdy-not-ready { background: var(--px-bad-bg); color: var(--px-bad); }
+
+	/* bars */
+	.px-bar { position: relative; height: 9px; background: var(--px-track); border-radius: 999px; overflow: visible; margin-top: 12px; }
+	.px-bar > span { display: block; height: 100%; width: var(--w); border-radius: 999px; background: var(--c, var(--px-brand)); animation: px-grow 0.9s ease-out; }
+	.px-bar > i { position: absolute; top: -4px; bottom: -4px; left: var(--t); width: 2px; background: var(--px-ink); opacity: 0.45; border-radius: 2px; }
+	.bar-advanced { --c: #16a34a; } .bar-proficient { --c: #2563eb; } .bar-developing { --c: #d97706; } .bar-beginner { --c: #dc2626; }
+
+	/* skills */
+	.px-skill .name { font-weight: 700; line-height: 1.3; min-height: 2.6em; }
+	.px-skill .cat { color: var(--px-muted); font-size: 12px; margin-top: 2px; }
+	.px-skill .score { display: flex; align-items: baseline; justify-content: space-between; margin-top: 14px; }
+	.px-skill .score b { font-size: 34px; line-height: 1; font-weight: 800; }
+	.px-skill .score small { color: var(--px-muted); font-size: 13px; font-weight: 600; }
+
+	/* gaps */
+	.px-gaps { margin-top: 16px; display: grid; gap: 12px; }
+	.px-gap { display: grid; grid-template-columns: 1fr auto; gap: 10px 16px; align-items: center; }
+	.px-gap .name { font-weight: 700; font-size: 16px; }
+	.px-gap .nums { color: var(--px-muted); font-size: 14px; margin-top: 2px; }
+	.px-gap .nums b { color: var(--px-ink); font-size: 18px; }
+	.px-gap .px-bar { grid-column: 1 / -1; margin-top: 2px; }
+
+	/* recommendations */
+	.px-rec { display: flex; flex-direction: column; gap: 12px; }
+	.px-rec-head { display: flex; gap: 14px; align-items: center; }
+	.px-tile { flex: none; width: 64px; height: 64px; border-radius: 14px; background: linear-gradient(135deg, var(--px-brand), var(--px-brand-2)); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 20px; overflow: hidden; }
+	.px-tile img { width: 100%; height: 100%; object-fit: cover; }
+	.px-rec h3 { font-size: 16px; line-height: 1.3; font-weight: 700; }
+	.px-rec .why { color: var(--px-muted); font-size: 14px; }
+	.px-rec .meta { display: flex; gap: 8px; flex-wrap: wrap; }
+	.px-rec .meta .skill { background: #eef2ff; color: var(--px-brand); }
+	.px-rec .progress { font-size: 13px; color: var(--px-muted); }
+	.px-btn { display: inline-flex; align-items: center; justify-content: center; margin-top: auto; padding: 10px 16px; border-radius: 10px; background: var(--px-brand); color: #fff !important; font-weight: 700; font-size: 14px; transition: background 0.15s; }
+	.px-btn:hover { background: #4338ca; }
+	.px-btn:focus-visible, .px-top-right a:focus-visible { outline: 3px solid #a5b4fc; outline-offset: 2px; }
+
+	/* progress list */
+	.px-progress { margin-top: 16px; display: grid; gap: 14px; }
+	.px-progress-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto; gap: 16px; align-items: center; }
+	.px-progress-row a { color: var(--px-ink); font-weight: 600; }
+	.px-progress-row a:hover { color: var(--px-brand); }
+	.px-progress-row .px-bar { margin-top: 0; }
+	.px-progress-row .pct { font-weight: 700; min-width: 44px; text-align: right; }
+
+	/* readiness breakdown */
+	.px-breakdown { margin-top: 16px; display: grid; gap: 16px; }
+	.px-break-row .label { display: flex; justify-content: space-between; font-weight: 600; }
+	.px-break-row .label b { font-size: 18px; }
+	.px-break-row.overall .label { font-size: 17px; }
+	.px-break-row.overall .px-bar { height: 12px; }
+
+	.px-empty { color: var(--px-muted); text-align: center; padding: 26px 12px; }
+	.px-foot { margin-top: 40px; color: var(--px-muted); font-size: 13px; text-align: center; }
+
+	@keyframes px-grow { from { width: 0; } }
+	@keyframes px-ring { from { stroke-dashoffset: var(--circ); } }
+	@media (prefers-reduced-motion: reduce) { .px-bar > span, .px-ring .value { animation: none; } }
+	@media (max-width: 720px) {
+		.px-hero { grid-template-columns: 1fr; padding: 24px 20px; text-align: left; }
+		.px-ring { width: 160px; height: 160px; }
+		.px-hero h1 { font-size: 28px; }
+		.px-progress-row { grid-template-columns: 1fr auto; }
+		.px-progress-row .px-bar { grid-column: 1 / -1; grid-row: 2; }
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+{% macro slug(value) -%}{{ (value or "") | lower | replace(" ", "-") }}{%- endmacro %}
+{% set d = data %}
+{% set r = d.readiness %}
+<div class="px-page">
+<div class="px-wrap">
+
+	<header class="px-top">
+		<div class="px-brand">PLACERAA</div>
+		<div class="px-top-right">
+			<span>{{ d.student.full_name | e }}</span>
+			<a href="{{ d.lms_url }}">Open Learning</a>
+		</div>
+	</header>
+
+	<!-- Header: overall placement readiness -->
+	<section class="px-hero" aria-label="Placement readiness">
+		<div>
+			<div class="px-eyebrow">Placeraa</div>
+			<h1>Your Placement Readiness</h1>
+			<p class="px-hi">
+				{% if d.is_own_dashboard %}Hi {{ d.student.first_name | e }}, here is where you stand.
+				{% else %}Viewing the dashboard of {{ d.student.full_name | e }}.{% endif %}
+			</p>
+			{% if r %}<span class="px-hero-level">{{ r.readiness_level | e }}</span>{% endif %}
+			<div class="px-stats">
+				<div class="px-stat"><b>{{ d.summary.skills_assessed }}</b><span>Skills assessed</span></div>
+				<div class="px-stat"><b>{{ d.summary.open_gaps }}</b><span>Open skill gaps</span></div>
+				<div class="px-stat"><b>{{ d.summary.recommended_courses }}</b><span>Courses recommended</span></div>
+			</div>
+		</div>
+		<div class="px-ring" role="img" aria-label="Placement readiness {{ '%.0f' | format(r.overall_score if r else 0) }} percent">
+			<svg viewBox="0 0 120 120" aria-hidden="true">
+				<circle class="track" cx="60" cy="60" r="{{ ring.radius }}" fill="none" stroke-width="10"></circle>
+				<circle class="value" cx="60" cy="60" r="{{ ring.radius }}" fill="none" stroke-width="10"
+					stroke-dasharray="{{ ring.circumference }}" stroke-dashoffset="{{ ring.offset }}"
+					style="--circ: {{ ring.circumference }}"></circle>
+			</svg>
+			<div class="px-ring-label">
+				<b>{{ '%.0f' | format(r.overall_score if r else 0) }}%</b>
+				<span>Placement Readiness</span>
+			</div>
+		</div>
+	</section>
+
+	<!-- Skill profile -->
+	<section class="px-section" aria-labelledby="px-h-skills">
+		<h2 id="px-h-skills">Skill Profile</h2>
+		<p class="px-sub">Your current proficiency in each skill. The dark tick marks your target.</p>
+		{% if d.skills %}
+		<div class="px-grid skills">
+			{% for s in d.skills %}
+			<article class="px-card px-skill">
+				<div class="name">{{ s.skill | e }}</div>
+				<div class="cat">{{ s.category | e }}</div>
+				<div class="score">
+					<b>{{ '%.0f' | format(s.score) }}</b>
+					<span class="px-chip lvl-{{ slug(s.level) }}">{{ s.level | e }}</span>
+				</div>
+				<div class="px-bar bar-{{ slug(s.level) }}" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ '%.0f' | format(s.score) }}" aria-label="{{ s.skill | e }} score">
+					<span style="--w: {{ s.score }}%"></span><i style="--t: {{ s.target_score }}%" title="Target {{ '%.0f' | format(s.target_score) }}"></i>
+				</div>
+			</article>
+			{% endfor %}
+		</div>
+		{% else %}
+		<div class="px-card px-empty" style="margin-top:16px">No skills assessed yet. Take a quiz in the learning platform to build your skill profile.</div>
+		{% endif %}
+	</section>
+
+	<!-- Skill gaps -->
+	<section class="px-section" aria-labelledby="px-h-gaps">
+		<h2 id="px-h-gaps">Skill Gaps</h2>
+		<p class="px-sub">Where you are below your target, most important first.</p>
+		{% if d.gaps %}
+		<div class="px-gaps">
+			{% for g in d.gaps %}
+			<article class="px-card px-gap">
+				<div>
+					<div class="name">{{ g.skill | e }}</div>
+					<div class="nums"><b>{{ '%.0f' | format(g.current_score) }}</b> / {{ '%.0f' | format(g.target_score) }} &middot; {{ '%.0f' | format(g.gap_score) }} points to your target</div>
+				</div>
+				<span class="px-chip pri-{{ slug(g.severity) }}">{{ g.severity | e }} Priority</span>
+				<div class="px-bar bar-{{ 'beginner' if g.severity == 'High' else 'developing' if g.severity == 'Medium' else 'proficient' }}" role="progressbar" aria-valuemin="0" aria-valuemax="{{ '%.0f' | format(g.target_score) }}" aria-valuenow="{{ '%.0f' | format(g.current_score) }}" aria-label="{{ g.skill | e }} progress to target">
+					<span style="--w: {{ (g.current_score / g.target_score * 100) if g.target_score else 0 }}%"></span>
+				</div>
+			</article>
+			{% endfor %}
+		</div>
+		{% else %}
+		<div class="px-card px-empty" style="margin-top:16px">No open gaps. You are on target in every assessed skill.</div>
+		{% endif %}
+	</section>
+
+	<!-- Recommended learning -->
+	<section class="px-section" aria-labelledby="px-h-recs">
+		<h2 id="px-h-recs">Recommended Learning</h2>
+		<p class="px-sub">Courses picked to close your gaps.</p>
+		{% if d.recommendations %}
+		<div class="px-grid recs">
+			{% for c in d.recommendations %}
+			<article class="px-card px-rec">
+				<div class="px-rec-head">
+					<div class="px-tile">{% if c.image %}<img src="{{ c.image | e }}" alt="">{% else %}{{ c.title[:2] | upper | e }}{% endif %}</div>
+					<div>
+						<h3>{{ c.title | e }}</h3>
+						<div class="meta" style="margin-top:6px">
+							<span class="px-chip skill">{{ c.skill | e }}</span>
+							<span class="px-chip pri-{{ slug(c.priority) }}">{{ c.priority | e }} priority</span>
+						</div>
+					</div>
+				</div>
+				<p class="why">{{ c.reason | e }}</p>
+				{% if c.enrolled %}
+				<div>
+					<div class="progress">{{ '%.0f' | format(c.progress) }}% complete</div>
+					<div class="px-bar" style="margin-top:6px" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ '%.0f' | format(c.progress) }}" aria-label="{{ c.title | e }} progress"><span style="--w: {{ c.progress }}%"></span></div>
+				</div>
+				{% endif %}
+				<a class="px-btn" href="{{ c.url | e }}">{{ c.action | e }}</a>
+			</article>
+			{% endfor %}
+		</div>
+		{% else %}
+		<div class="px-card px-empty" style="margin-top:16px">No courses to recommend right now.</div>
+		{% endif %}
+	</section>
+
+	<!-- Progress -->
+	<section class="px-section" aria-labelledby="px-h-progress">
+		<h2 id="px-h-progress">Learning Progress</h2>
+		<p class="px-sub">Your courses in the learning platform.</p>
+		{% if d.enrollments %}
+		<div class="px-card px-progress">
+			{% for e in d.enrollments %}
+			<div class="px-progress-row">
+				<a href="{{ e.url | e }}">{{ e.title | e }}</a>
+				<div class="px-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ '%.0f' | format(e.progress or 0) }}" aria-label="{{ e.title | e }} progress"><span style="--w: {{ e.progress or 0 }}%"></span></div>
+				<div class="pct">{{ '%.0f' | format(e.progress or 0) }}%</div>
+			</div>
+			{% endfor %}
+		</div>
+		{% else %}
+		<div class="px-card px-empty" style="margin-top:16px">
+			You have not started any course yet.
+			{% if d.recommendations %}<a class="px-btn" style="margin-top:12px" href="{{ d.recommendations[0].url | e }}">Start Course</a>{% endif %}
+		</div>
+		{% endif %}
+	</section>
+
+	<!-- Placement readiness breakdown -->
+	<section class="px-section" aria-labelledby="px-h-ready">
+		<h2 id="px-h-ready">Placement Readiness</h2>
+		<p class="px-sub">How your skills add up across the areas recruiters look at.</p>
+		{% if r %}
+		<div class="px-card px-breakdown">
+			{% for label, value, cls in [
+				("Overall", r.overall_score, "overall"),
+				("Technical", r.technical_score, ""),
+				("Problem Solving", r.problem_solving_score, ""),
+				("Aptitude", r.aptitude_score, ""),
+				("Communication", r.communication_score, "")] %}
+			<div class="px-break-row {{ cls }}">
+				<div class="label"><span>{{ label }}</span><b>{{ '%.0f' | format(value or 0) }}%</b></div>
+				<div class="px-bar {{ 'bar-advanced' if (value or 0) >= 75 else 'bar-developing' if (value or 0) >= 50 else 'bar-beginner' }}" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ '%.0f' | format(value or 0) }}" aria-label="{{ label }} score"><span style="--w: {{ value or 0 }}%"></span></div>
+			</div>
+			{% endfor %}
+			<div><span class="px-chip rdy-{{ slug(r.readiness_level) }}">{{ r.readiness_level | e }}</span></div>
+		</div>
+		{% else %}
+		<div class="px-card px-empty" style="margin-top:16px">Your placement readiness will appear once your skills are assessed.</div>
+		{% endif %}
+	</section>
+
+	<p class="px-foot">{% if r and r.last_updated %}Last updated {{ frappe.format_date(r.last_updated) }}. {% endif %}Placeraa, placement readiness for universities.</p>
+
+</div>
+</div>
+{% endblock %}

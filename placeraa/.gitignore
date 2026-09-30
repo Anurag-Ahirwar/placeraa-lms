@@ -1,0 +1,7 @@
+*.pyc
+__pycache__/
+*.egg-info
+.DS_Store
+node_modules
+# built by `bench build`
+placeraa/public/dist

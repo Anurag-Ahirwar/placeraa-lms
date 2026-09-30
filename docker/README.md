@@ -12,6 +12,7 @@ A local development/demo stack. Compose project name: `placeraa`.
 
 ```
 this repository ─────────────► /home/frappe/frappe-bench/apps/lms   (bind mount)
+placeraa/       ─────────────► /home/frappe/frappe-bench/apps/placeraa (bind mount, the Placeraa app)
 docker/         ─────────────► /workspace                            (init.sh, Procfile)
 volume bench-data ───────────► /home/frappe/frappe-bench             (env, sites, apps/frappe, apps/payments)
 volume lms-node-modules ─────► .../apps/lms/frontend/node_modules
@@ -21,6 +22,14 @@ volume mariadb-data ─────────► /var/lib/mysql
 The container runs the LMS source checked out in this repository. It never
 clones LMS from GitHub. `init.sh` refuses to start if `apps/lms` is not a bind
 mount, so it cannot silently fall back to another copy.
+
+The Placeraa Frappe app lives in `placeraa/` in this repository and is mounted
+as its own app, next to `lms`. Placeraa code goes there, never into `lms/`.
+It was created once with `bench new-app placeraa --no-git` and installed with
+`bench --site lms.localhost install-app placeraa`; both results (the
+`apps.txt` entry, the editable install and the site registration) live in the
+`bench-data` volume and the database. Changing the mounts needs the service to
+be recreated (`docker compose ... up -d frappe`), not just restarted.
 
 The bench, the site and the database are in named volumes, so
 `docker compose down` and container recreation do not lose the site.

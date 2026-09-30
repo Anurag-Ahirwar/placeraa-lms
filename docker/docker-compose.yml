@@ -62,6 +62,9 @@ services:
       - ..:/home/frappe/frappe-bench/apps/lms
       # Keeps ~50k node_modules files off the Windows bind mount.
       - lms-node-modules:/home/frappe/frappe-bench/apps/lms/frontend/node_modules
+      # The Placeraa Frappe app (placeraa/ in this repository), mounted as its own
+      # sibling app. It is a separate mount, not a path inside apps/lms.
+      - ../placeraa:/home/frappe/frappe-bench/apps/placeraa
       # init.sh and Procfile.
       - .:/workspace
     ports:
